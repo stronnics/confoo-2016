@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+{% set active_page = "home" %}
+{% block head %}  
+  <link rel="stylesheet" href="/static/css/bootstrap-sortable.css">
+  <script src="//code.highcharts.com/4.0.1/highcharts.js"></script>
+  <script src="//code.highcharts.com/4.0.1/highcharts-more.js"></script>
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class='col-md-12'>
+      <h1 class="text-center">Analytics Dashboard</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class='col-md-6'>
+      <h3 class="text-center">Gender Equality</h3>
+      <p class="text-center">Examples tailored to India</p>
+    </div>
+    <div class='col-md-6'>
+      <h3 class="text-center">Literacy</h3>
+      <p class="text-center">Examples tailored to India</p>
+    </div>
+  </div>
+
+  <div class="row" style='margin-top: 30px'>
+    
+
+    <!-- Chart 1 -->
+    <div class="col-md-6">
+      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+      <script type="text/javascript">
+      $(function () {
+      $('#container').highcharts({
+        title: {
+            text: 'Gender Equality Campaigns in India'
+        },
+        xAxis: {
+            categories: ['April 2015', 'May 2015', 'June 2015', 'July 2015', 'August 2015']
+        },
+        labels: {
+            items: [{
+                html: 'Total Campaigns',
+                style: {
+                    left: '70px',
+                    top: '10px',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                }
+            }]
+        },
+        credits: {
+           enabled: false
+        },
+        series: [{
+            type: 'column',
+            name: 'Tweeter-based',
+            data: [30, 20, 10, 30, 40]
+        }, {
+            type: 'column',
+            name: 'SMS-based',
+            data: [20, 30, 50, 70, 60]
+        }, {
+            type: 'column',
+            name: 'Article-based',
+            data: [40, 30, 30, 50, 60]
+        }, {
+            type: 'spline',
+            name: 'Average',
+            data: [30, 26.7, 30, 50, 53.3],
+            marker: {
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
+        }, {
+            type: 'pie',
+            name: 'Total consumption',
+            data: [{
+                name: 'Tweets',
+                y: 130,
+                color: Highcharts.getOptions().colors[0] // Tweets color
+            }, {
+                name: 'SMSs',
+                y: 230,
+                color: Highcharts.getOptions().colors[1] // SMSs color
+            }, {
+                name: 'Articles',
+                y: 180,
+                color: Highcharts.getOptions().colors[2] // Articles color
+            }],
+            center: [100, 60],
+            size: 100,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
+    });
+});
+
+      </script>
+    </div>
+
+    <!-- Chart 2 -->
+    <div class="col-md-6">
+      <div id="bars" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+      <script type="text/javascript">
+
+        $(function () {
+        $('#bars').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Literacy Rate Per Region in India'
+        },
+        subtitle: {
+            text: 'Source: some research'
+        },
+         credits: {
+            enabled: false
+         },
+        xAxis: {
+            categories: ['Delhi', 'Chennai', 'Mumbai', 'Bangalore', 'Hyderabad'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Percentage',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' millions'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -20,
+            y: 70,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'May 2015',
+            data: [0.20, 0.50, 0.45, 0.50, 0.30]
+        }, {
+            name: 'June 2015',
+            data: [0.30, 0.60, 0.70, 0.60, 0.35]
+        }, {
+            name: 'July 2015',
+            data: [0.40, 0.65, 0.80, 0.70, 0.40]
+
+        }]
+    });
+});
+
+      </script>
+
+
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 30px">
+    
+    <!-- Chart 3 -->
+    <div class="col-md-6">
+    <div id="denouncements" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <script type="text/javascript">
+        $(function () {
+        $('#denouncements').highcharts({
+        title: {
+            text: 'Gender Equality Monthly Denouncements',
+            x: -20 //center
+        },
+         credits: {
+           enabled: false
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Denouncements'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'By Men',
+            data: [7.0, 6.9, 9.5, 14.5, 15.2, 17.5, 18.2, 20.5, 22.3, 22.6, 23.9, 24.6]
+        }, {
+            name: 'By Women',
+            data: [0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 25.0, 25.1, 26.1, 27.6, 29.0]
+        }, {
+            name: 'By Children',
+            data: [0, 0.6, 3.5, 8.4, 13.5, 13.8, 14.3, 15.9, 14.0, 14.4, 15.0, 16.0]
+            }]
+        });
+    });
+      </script>
+
+    </div>
+
+    <!-- Chart 4 -->
+    <div class="col-md-6">
+    
+      <div id="column-placement" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto"></div>
+      <script type="text/javascript">
+        $(function () {
+        $('#column-placement').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Performance of Responsive Systems'
+        },
+         credits: {
+          enabled: false
+         },
+        xAxis: {
+            categories: [
+                'Delhi',
+                'Mumbai',
+                'Bangalore'
+            ]
+        },
+        yAxis: [{
+            min: 0,
+            title: {
+                text: 'People (millions)'
+            }
+        }, {
+            title: {
+                text: 'People (millions)'
+            },
+            opposite: true
+        }],
+        legend: {
+            shadow: false
+        },
+        tooltip: {
+            shared: true
+        },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Old SMS System',
+            color: 'rgba(165,170,217,1)',
+            data: [150, 73, 20],
+            pointPadding: 0.3,
+            pointPlacement: -0.2
+        }, {
+            name: 'New SMS System',
+            color: 'rgba(126,86,134,.9)',
+            data: [140, 90, 40],
+            pointPadding: 0.4,
+            pointPlacement: -0.2
+        }, {
+            name: 'Old App System ',
+            color: 'rgba(248,161,63,1)',
+            data: [183.6, 178.8, 198.5],
+            tooltip: {
+                valuePrefix: '',
+                valueSuffix: ''
+            },
+            pointPadding: 0.3,
+            pointPlacement: 0.2,
+            yAxis: 1
+        }, {
+            name: 'New App System',
+            color: 'rgba(186,60,61,.9)',
+            data: [203.6, 198.8, 208.5],
+            tooltip: {
+                valuePrefix: '',
+                valueSuffix: ''
+            },
+            pointPadding: 0.4,
+            pointPlacement: 0.2,
+            yAxis: 1
+        }]
+    });
+});
+      </script>
+
+    </div>
+  </div>
+
+  <!-- Demo text--> 
+  <div class="row" style="margin-top: 30px;">
+    <div class="col-md-12 ">
+      <p class="text-center">Demo for Social Dynamics.</p>
+    </div>
+  </div>
+
+  
+{% endblock %}

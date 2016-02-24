@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% set active_page = "org1" %}
+{% block head %}
+  <script src="/static/js/highcharts_generators.js"></script>
+  <script src="//code.highcharts.com/3.0.10/highcharts.js"></script>
+  <script src="//code.highcharts.com/modules/map.js"></script>
+  <script src="//code.highcharts.com/maps/modules/data.js"></script>
+  <script src="//code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="//www.highcharts.com/samples/data/maps/world.js"></script>
+  <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
+  <script src="http://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="/static/js/table_generators.js"></script>
+  <script src="/static/js/async.js"></script>
+{% endblock %}
+{% block content %}
+  
+  <div class="row">
+    <div class='col-md-12'>
+      <h1 class="text-center">Organization 1</h1>
+    </div>
+  </div>
+
+{% endblock %}

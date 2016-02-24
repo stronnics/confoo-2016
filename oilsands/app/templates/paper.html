@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set active_page = "paper" %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+  
+  <div class="row">
+    <div class='col-md-12'>
+      <h1 class="text-center">Research Paper</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="width:100%; height:50%">
+    <object data="/static/data/oilsands.pdf" type="application/pdf" width="100%" height="100%">
+      <p>It appears you don't have a PDF plugin for this browser.
+      You can <a href="/static/data/oilsands.pdf">click here to
+      download the PDF file.</a></p>
+    </object>
+    </div>  
+  </div>
+
+  <div class="row" style='margin-top: 5px'>
+    <div class="col-md-12">
+    
+    </div>
+  </div>
+
+{% endblock %}

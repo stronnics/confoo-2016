@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% set active_page = "oilsands" %}
+{% block head %}
+
+  <script src="//code.highcharts.com/3.0.10/highcharts.js"></script>
+  <script src="//code.highcharts.com/modules/map.js"></script>
+  <script src="//code.highcharts.com/maps/modules/data.js"></script>
+  <script src="//code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="//www.highcharts.com/samples/data/maps/world.js"></script>
+  <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
+  <script src="http://code.highcharts.com/maps/modules/data.js"></script>
+
+{% endblock %}
+{% block content %}
+  
+  <div class="row">
+    <div class='col-md-8 col-md-offset-2'>
+    <h1 class="text-center">Oil Sands Overview</h1>
+    <h3>Problem Observation</h3>
+    The Province of Alberta is currently operating a modest at best energy return per
+    area invested: Oil sands are being mined over a vast area which destroy large swaths
+    of forests releasing even more carbon into the atmosphere while also generating large
+    lagoons of heavily polluted water. Poisson <em>et al</em> [1] recently demonstrated that
+    since the 1990s, the total energy used (invested) in the Canadian oil and gas sector
+    increased approximately 63%, while energy production (return) increased only 18%
+    2resulting in a decreased total energy return on investment (EROI) from 16:1 to 11:1.
+    In the spirit of increasing the EROI from this vast resource, we present a possible
+    better EROI for the area and the country.<br><br>
+
+    <h4>Hypothesis:</h4> 
+    <em>The effect of oil sands utilization on climate change does not have to be negative
+    if, as part of land reclamation of the mined oil sands area, developers of the oil sands
+    resource planned and invested for when the oil sands are depleted. One scenario could
+    include for every square kilometer of land to be reclaimed, a 5 MW wind turbine is
+    installed. The power from the turbine can be used for oil sands production, and excess
+    power can also be sold to the grid or be used to clean contaminated. Another possible
+    scenario could include significant coverage of the land to be reclaimed by PV solar
+    panels.</em><br><br>
+
+
+    In addition to improving EROI, this proposed investment represents an alternative
+    to a potential carbon tax because companies are investing in their own future and they
+    benefit from the power generated. This benefits the oil sands companies directly and
+    immediately because they can use the electric power for production of the oil sands
+    instead of having to build more transmission lines, or install mini nuclear reactors
+    to bring power in for which they then have to pay to use. Furthermore, once the
+    number of turbines increases to a point, they can start sending power out on the
+    same power lines they initially had installed to bring power in (are in the process of
+    installing) to develop the oil sands.<br><br>
+
+
+    We hypothesize that a better EROI would be obtained by investing in renewable
+    energy systems emplaced on land to be reclaimed from mining activities. In the short
+    term, companies would be able to insert electric heaters in the ground to make the
+    oil flow instead of having to inject steam, and at refining of the heavy oil could be
+    done so it could be sent through the pipeline in lighter more valuable form. In the
+    long term, it would be possible to send power generated out along the power lines
+    that recently have been built to provide power to the oil sands region, thus enabling
+    coal-fired power plants in the other regions to be phased out.<br><br>
+
+    References:<br>
+    [1] Poisson et al. <em>A Time Series Analysis of Canadian Gas and Oil</em>. Energies 2013, 6, 5940-5959.
+    November 2013
+    </div>  
+  </div>
+
+  <div class="row" style='margin-top: 5px'>
+    <div class="col-md-12">
+    </div>
+  </div>
+
+{% endblock %}

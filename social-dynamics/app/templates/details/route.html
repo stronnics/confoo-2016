@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% set active_page = "search" %}
+{% block head %}
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-sortable.css">
+  <script src="//code.highcharts.com/4.0.1/highcharts.js"></script>
+  <script src="//code.highcharts.com/4.0.1/highcharts-more.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="/static/js/highcharts_generators.js"></script>
+  <script src="/static/js/api_call_helper.js"></script>
+  <script src="/static/js/table_generators.js"></script>
+  <script src="/static/js/bootstrap-sortable.js"></script>
+{% endblock %}
+{% block content %}
+
+  <div class="container-fluid">
+    <div class="row" style='margin-bottom: 20px'>
+     
+      <div class='col-md-4'>
+        <form class="form-inline" role="form">
+          <input class='form-control datepicker' id='start_date_input'/>
+          <input class='form-control datepicker' id='end_date_input' />
+          <button class='btn btn-primary' id='validate-dates'>Go!</button>
+        </form>
+      </div>
+
+      <div class="col-md-3">
+        <div id="zoom-picker">
+          <input type="radio" id="daily" value="day" name="radio" checked="checked" class="zoom">
+          <label for="daily">Daily</label>
+          <input type="radio" id="weekly" value="week" name="radio" class="zoom">
+          <label for="weekly">Weekly</label>
+          <input type="radio" id="monthly" value="month" name="radio" class="zoom">
+          <label for="monthly">Monthly</label>
+        </div>
+      </div>
+
+      <div class='col-md-5'>
+        <h2 style='text-align:center;margin:0' id='route-title'></h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class='col-md-12' id="chart-tabs">
+        <ul>
+          <li class='chart-tab' name='revenues'><a href="#tab-revenues">Revenues</a></li>
+          <li class='chart-tab' name='visitors'><a href="#tab-visitors">Visitors</a></li>
+        </ul>
+        <div class="col-md-12" id="tab-revenues">
+          <div id='revenues'></div>
+        </div>
+        <div class="col-md-12" id="tab-visitors">
+          <div id='visitors'></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style='margin-top: 25px'>
+      <div class='col-md-12' id="table-tabs">
+        <ul>
+          <li class='table-tab' name='by_operator'><a href="#tab-by_operator">By operator</a></li>
+          <li class='table-tab' name='by_date'><a href="#tab-by_date">Over time</a></li>
+        </ul>
+        <div class="col-md-12" id="tab-by_operator">
+          <div id="loader-by_operator"></div>
+          <table class="table sortable table-striped table-bordered table-hover" id="by_operator"></table>
+        </div>
+        <div class="col-md-12" id="tab-by_date">
+          <div id="loader-by_date"></div>
+          <table class="table sortable table-striped table-bordered table-hover" id="by_date"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var query = {
+      'route': '{{origin}}/{{destination}}',
+      'start_date': '{{ start_date }}',
+      'end_date': '{{ end_date }}',
+      'step': 'day'
+    };
+
+    var dimension;
+
+    function getRevenuesData() {
+      highchartsLoader('#revenues');
+      $.get('/api/gross_revenues', query, function (gr) {
+        $.get('/api/commissions', query, function (com) {
+          drawTwoStackedBarTimeChart('#revenues', JSON.parse(com), JSON.parse(gr), true, 'Commissions', 'Gross revenues', 'Revenues');
+        });
+      });
+    }
+
+    function getVisitsData() {
+      highchartsLoader('#visitors');
+      $.get('/api/num_visits', query, function (vis) {
+        $.get('/api/num_buyers', query, function (buy) {
+          drawTwoStackedBarTimeChart('#visitors', JSON.parse(buy), JSON.parse(vis), true, 'Buyers', 'Visitors', 'Visitors');
+        });
+      });
+    }
+
+    function getDimensionData(step, freq) {
+      var dimension_query = {
+        start_date: query.start_date,
+        end_date: query.end_date,
+        step: step,
+        frequency: freq,
+        route: '{{origin}}/{{destination}}'
+      }
+
+      dimension_query.dimension = step ? null : dimension;
+      $('#by_' + dimension).html(' ');
+      highchartsLoader('#loader-by_' + dimension);
+      if (step) {
+        getDimensionRecap(dimension_query, function (data) {
+          drawReport(data, '#by_' + dimension, [], 'Metrics', false, false);
+          $('#loader-by_' + dimension).html(' ');
+        });
+      } else {
+        getDimensionSalesRecap(dimension_query, function (data) {
+          drawDimensionTable('#by_' + dimension, data, dimension);
+          $('#loader-by_' + dimension).html(' ');
+        });
+      }
+    }
+
+    function refreshCharts() {
+      getRevenuesData();
+      getVisitsData();
+    }
+
+    function updateDimensionData(is_zoom) {
+      if($('#tab-by_date[aria-hidden=false]').length == 1) {
+        var freq = query.step == 'day' ? 'week' : null;
+        getDimensionData(query.step, freq);
+      } else if ($('#table-tabs div[aria-hidden=false]').length == 1 && !is_zoom) {
+        getDimensionData();
+      }
+    }
+
+    $(document).ready(function () {
+      $('#start_date_input').val("{{ start_date }}");
+      $('#end_date_input').val("{{ end_date }}");
+
+      var short_origin = '{{origin}}'.split(',')[0];
+      var short_destination = '{{destination}}'.split(',')[0];
+      $('#route-title').html(short_origin +' - ' + short_destination);
+
+      $( "#zoom-picker" ).buttonset();
+      $( "#chart-tabs" ).tabs();
+      $( "#table-tabs" ).tabs({
+        collapsible: true,
+        active: false
+      });
+
+      setDatePickerLogic('.datepicker', '#start_date_input', '#end_date_input', '.zoom', '#validate-dates');
+
+      $('.table-tab').click(function() {
+        dimension = $(this).attr('name').split('_')[1];
+        updateDimensionData();
+      });
+
+      $('.chart-tab').click(function() {
+        $(window).resize();
+      });
+
+      createInternalLinking();
+      refreshCharts();
+    });
+  </script>
+
+{% endblock %}

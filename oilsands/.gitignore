@@ -1,0 +1,4 @@
+flask_env/*
+*.pyc
+*.csv
+node_modules/*
